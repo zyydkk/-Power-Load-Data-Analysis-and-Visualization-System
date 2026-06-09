@@ -24,4 +24,16 @@
 
 2026.6.8-下载公开数据集Hourly Energy Consumption，使用其中的PJME_hourly.csv作为项目使用的第一个数据集。
 
-2026.6.8-使用jupyter notebook 新建第一个data_loader数据加载脚本。
+         使用jupyter notebook 新建第一个data_loader数据加载脚本。
+
+2026.6.9-使用jupyter notebook 新建preprocessing数据处理脚本。
+
+         从 data 的数据表中的 Datetime 时间列中提取 年、月、小时、星期几，并新增 year、month、hour、dayofweek 等这些列。
+         
+         将 Datetime 时间列按照时间顺序进行排列。
+
+         使用jupyter notebook 新建visualize可视化脚本。
+
+         画出负荷时间变化曲线(随年份变化）。
+         
+
