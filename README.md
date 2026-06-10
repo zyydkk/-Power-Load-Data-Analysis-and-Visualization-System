@@ -39,5 +39,17 @@
          使用jupyter notebook 新建visualize可视化脚本。
 
          画出负荷时间变化曲线(随年份变化）。
+
+2026.6.10-
+
+          鉴于代码能力较弱，改变对每一个部分进行单独编码的计划，将data_loader、preprocessing、visualize三个jupyter notebook脚本
+          合成为一个脚本命名为：01_data_analysis.以此脚本作为本项目的第一个可运行程序.
+
+          在负荷时间变化曲线(随年份变化）这个图的基础上添加X轴名、Y轴名、图片名以及网格线.
+
+          导入 train_test_split 函数，以hour,dayofweek,month作为数据集的输入特征，PJME_MW 作为数据集的标签.
+
+          将数据集以 test_size=0.2 的方式划分 训练集和测试集.
+          
          
 
