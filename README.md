@@ -50,6 +50,18 @@
           导入 train_test_split 函数，以hour,dayofweek,month作为数据集的输入特征，PJME_MW 作为数据集的标签.
 
           将数据集以 test_size=0.2 的方式划分 训练集和测试集.
+2026.6.10-
+
+         导入 time 模块，记录模型训练时间。
+
+         导入 mean_absolute_error,mean_squared_error,r2_score，通过 y_pred = model.predict(X_test) 计算预测值；
+
+         计算 MAE、MSE、R2 三项计算模型误差；
+
+         画出测试集前100个真实值和预测值的对比曲线。
+         
+         
+          
           
          
 
