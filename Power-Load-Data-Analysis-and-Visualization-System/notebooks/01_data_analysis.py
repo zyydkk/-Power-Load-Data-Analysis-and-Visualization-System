@@ -78,6 +78,8 @@ data_index["month"] = data_index.index.month
 data_index.head()
 
 import matplotlib.pyplot as plt
+plt.rcParams["font.sans-serif"] = ["Microsoft YaHei"]
+plt.rcParams["axes.unicode_minus"] = False
 
 plt.figure(figsize=(10,5))
 plt.plot(data_index.index,data_index["PJME_MW"])
@@ -86,7 +88,7 @@ plt.ylabel("Load")
 plt.title("Power Load Curve")
 plt.grid(True)
 ## plt.grid(Ture) 的作用是显示图中的网格线。
-plt.savefig("负荷随时间变化曲线(随时间变化).png")
+## plt.savefig("负荷随时间变化曲线(随时间变化).png")
 plt.show()
 
 from sklearn.model_selection import train_test_split
@@ -108,3 +110,50 @@ X_train,X_test,y_train,y_test = train_test_split(X,y,test_size=0.2,random_state=
 ## 这一段代码的作用是：把原始数据 X 和 标签 y 划分为训练集和测试集  
 ## random_state = 42 固定随机种子， 保证每次划分结果一致
 ## stratify=y的作用是让训练集和测试集中的类别比例尽量和原始数据保持一致。
+
+import time
+start = time.time()
+
+from sklearn.ensemble import RandomForestRegressor
+## RandomForestRegressor 是随机森林模型
+
+model = RandomForestRegressor(n_estimators=500,max_depth=10,min_samples_leaf=5,n_jobs=-1)
+model.fit(X_train, y_train)
+## 导入随机森林模型，创建模型对象，然后用训练集训练模型：model.fit（）
+## 随机森林参数解释：n_estimators:树的数量；max_depth:每棵树可以长多深，max_depth=None 意味着树会尽可能分裂，直到满足停止条件；
+## random_rate = 42：设置随机种子；
+## min_samples_leaf:叶子节点最小样本数：表示每个叶子节点至少要有几个样本；min_samples_leaf=1:只包含一个样本，模型学的很细，容易过拟合；min_samples_leaf=5，模型会更平滑
+## n_jobs ：控制模型训练使用多少cpu核心，n_jobs = None 通常使用有限的计算资源，n_jobs = -1表示尽可能使用所有的cpu核心训练模型。
+end = time.time()
+
+print("训练耗时",end-start)
+
+from sklearn.metrics import mean_absolute_error,mean_squared_error,r2_score
+y_pred = model.predict(X_test)
+## 这段代码中 model.predict(X_test) 在 sklearn 中返回的数据类型为 Numpy数组：numpy：ndarray
+
+print("MAE:平均绝对误差",mean_absolute_error(y_test,y_pred))
+print("MSE:均方误差",mean_squared_error(y_test,y_pred))
+print("R2:拟合优度",r2_score(y_test,y_pred))
+
+
+print("训练集得分",model.score(X_train, y_train))
+print("测试集得分",model.score(X_test, y_test))
+
+print(type(y_test))
+print(type(y_pred))
+
+
+plt.plot(y_test.values[:100],label = "True")
+plt.plot(y_pred[:100],label="Predicted")
+## y.test是来自pandas， .values 是把 Pandas 的 Series 转换为Numpy数组
+## [：100]：取测试集真实值的前100个
+
+plt.title("真实值与预测值对比")
+plt.xlabel("样本序号")
+plt.ylabel("负荷值")
+
+plt.legend()
+## 显示图例：label = "True"，label="Predicted"
+plt.show()
+## 这段代码的作用：画出测试集前100个真实值和预测值的对比曲线
