@@ -74,6 +74,11 @@ data_index["hour"] = data_index.index.hour
 data_index["dayofweek"] = data_index.index.dayofweek
 ## 从 data_index 的时间索引中提取“星期几”，并新增一列 "dayofweek" 保存结果。
 data_index["month"] = data_index.index.month
+data_index["is_weekend"] = data_index["dayofweek"].apply(lambda x: 1 if x >= 5 else 0)
+## 根据 dayofweek 这一列判断是否为周末，并增加一列 is_weekend
+## .apply()  把一个函数引用到每一个数据上
+## lambda x: 意味着临时定义一个小函数， 其中 x 表示当前正在处理的那个值
+
 
 data_index.head()
 
