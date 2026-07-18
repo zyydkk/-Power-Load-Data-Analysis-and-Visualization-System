@@ -88,6 +88,14 @@
 
          保存到results/metrics/rf_val_test_metrics.csv。
 
+2026.7.18-
+
+         编写验证集预测曲线和测试集预测曲线；
+         
+         更新02_feature_engineering_baseline 脚本；
+
+         将曲线保存到E:/project/1/results/figures。
+         
          
 
 
