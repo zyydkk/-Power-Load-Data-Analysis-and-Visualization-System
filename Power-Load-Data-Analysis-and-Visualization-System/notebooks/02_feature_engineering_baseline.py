@@ -6,7 +6,7 @@ plt.rcParams["axes.unicode_minus"] = False
 
 import pandas as pd
 
-data = pd.read_csv("D:/project/1/PJME_hourly.csv")
+data = pd.read_csv("E:/project/1/PJME_hourly.csv")
 ## 这一段代码的作用是读取CSV文件，并把它保存为一个Pandas DataFrame 类型的数据表, 变量名叫data。
 
 print(data.head())
@@ -100,5 +100,98 @@ feature = [
 x = data_index[feature]
 y = data_index["PJME_MW"]
 
-split_index = int(len(data_index)*0.8)
+train_ratio = 0.7
+val_ratio = 0.85
+train_index = int(len(data_index)*train_ratio)
+## 作用是：计算一个数据划分的位置，用于把数据按 80% 和 20% 分成训练集和测试集
+val_index = int(len(data_index)*val_ratio)
+
+x_train = x.iloc[:train_index]
+x_val = x.iloc[train_index:val_index]
+x_test = x.iloc[val_index:]
+
+y_train = y.iloc[:train_index]
+y_val = y.iloc[train_index:val_index]
+y_test = y.iloc[val_index:]
+## 按照 split_index 这个分割点， 把特征 x 和 目标值 y 分成训练集和测试集
+## .iloc[] 用于按位置进行基于整数位置的索引或选择，.iloc[[行，列]]
+
+
+#print("训练集",x_train.shape,y_train.shape)
+#print("验证集",x_val.shape,y_val.shape)
+#print("测试集",x_test.shape,y_test.shape)
+#print("训练集时间范围",x_train.index.min(),"到",x_train.index.max())
+#print("验证集时间范围",x_val.index.min(),"到",x_val.index.max())
+
+# 6.训练一个改进版的 baseline
+from sklearn.ensemble import RandomForestRegressor
+model = RandomForestRegressor(n_estimators=100, random_state=42, n_jobs=-1)
+model.fit(x_train, y_train)
+y_val_pred = model.predict(x_val)
+y_test_pred = model.predict(x_test)
+
+# 7. 评估模型性能
+import numpy as np
+from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
+
+# 定义评价函数
+def evaluate_model(y_true, y_pred, dataset_name):
+    
+    mae = mean_absolute_error(y_true, y_pred)
+    rmse = np.sqrt(mean_squared_error(y_true, y_pred))
+    ## 计算模型预测结果的RMSE， 均方根误差； np.sqrt()：开平方
+    r2 = r2_score(y_test, y_pred)
+    mape = np.mean(np.abs((y_true-y_pred)/y_true))*100 
+    ## 计算模型预测结果的mape：平均绝对百分比误差
+
+    print(f"{dataset_name} Evaluaiton Results:")
+    print("MAE",mae)
+    print("RMSE",rmse)
+    print("R2",r2)
+    print("MAPE",mape)
+    print("-"*40)
+
+    return{
+        "Dataset":dataset_name,
+        "MAE":mae,
+        "RMSE":rmse,
+        "R2":r2,
+        "MAPE":mape
+    }
+
+val_metrics = evaluate_model(y_val, y_val_pred,"Validaton Set")
+test_metrics = evaluate_model(y_test, y_test_pred,"Test Set")
+
+metrics_df = pd.DataFrame([val_metrics,test_metrics])
+metrics_df.to_csv("E:/project/1/results/metrics/rf_val_test_metrics.csv", index=False)
+
+metrics_df
+
+
+# 8.验证集预测曲线
+plt.figure(figsize=(12,5))
+plt.plot(y_val.values[:500], label="True Load", color="blue")
+plt.plot(y_val_pred[:500], label="Predicted Load", color="red")
+plt.xlabel("Time Step")
+plt.ylabel("PJME Load (MW)")
+plt.title("Validation Set: True load vs Predicted Load")
+plt.legend()
+plt.tight_layout()
+plt.savefig("E:/project/1/results/figures/rf_validation_prediction_curve.png",dpi=300)
+plt.show()
+
+# 9. 测试集预测曲线
+plt.figure(figsize=(12, 5))
+plt.plot(y_test.values[:500], label="True Load")
+plt.plot(y_test_pred[:500], label="Predicted Load")
+plt.xlabel("Time Step")
+plt.ylabel("PJME Load (MW)")
+plt.title("Test Set: True Load vs Predicted Load")
+plt.legend()
+plt.tight_layout()
+plt.savefig("E:/project/1/results/figures/rf_test_prediction_curve.png", dpi=300)
+plt.show()
+
+
+
 
