@@ -163,7 +163,7 @@ val_metrics = evaluate_model(y_val, y_val_pred,"Validaton Set")
 test_metrics = evaluate_model(y_test, y_test_pred,"Test Set")
 
 metrics_df = pd.DataFrame([val_metrics,test_metrics])
-metrics_df.to_csv("E:/project/1/results/metrics/rf_val_test_metrics.csv", index=False)
+metrics_df.to_csv("E:/Power-Load-Data-Analysis-and-Visualization-System/results/metrics/rf_val_test_metrics.csv", index=False)
 
 metrics_df
 
@@ -177,7 +177,7 @@ plt.ylabel("PJME Load (MW)")
 plt.title("Validation Set: True load vs Predicted Load")
 plt.legend()
 plt.tight_layout()
-plt.savefig("E:/project/1/results/figures/rf_validation_prediction_curve.png",dpi=300)
+plt.savefig("E:/Power-Load-Data-Analysis-and-Visualization-System/results/figures/rf_validation_prediction_curve.png",dpi=300)
 plt.show()
 
 # 9. 测试集预测曲线
@@ -189,7 +189,7 @@ plt.ylabel("PJME Load (MW)")
 plt.title("Test Set: True Load vs Predicted Load")
 plt.legend()
 plt.tight_layout()
-plt.savefig("E:/project/1/results/figures/rf_test_prediction_curve.png", dpi=300)
+plt.savefig("E:/Power-Load-Data-Analysis-and-Visualization-System/results/figures/rf_test_prediction_curve.png", dpi=300)
 plt.show()
 
 
