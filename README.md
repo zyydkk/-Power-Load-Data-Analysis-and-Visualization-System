@@ -118,6 +118,7 @@
          更新 随机数模型的误差曲线。
          
 2026.8.28- 
+         
          项目总结：
          1. 基于 PJME_hourly.csv 完成数据读取和探索性分析；
          2. 构造 hour、dayofweek、month、is_weekend 等时间特征；
