@@ -116,7 +116,20 @@
          更新 预测曲线对比图
 
          更新 随机数模型的误差曲线。
+         
+2026.8.28- 
+         项目总结：
+         1. 基于 PJME_hourly.csv 完成数据读取和探索性分析；
+         2. 构造 hour、dayofweek、month、is_weekend 等时间特征；
+         3. 构造 lag_1、lag_24、lag_168 等历史负荷特征；
+         4. 构造 rolling_mean_24、rolling_mean_168 等滑动统计特征；
+         5. 按时间顺序划分训练集、验证集和测试集；
+         6. 构建 Mean Baseline、Linear Regression 和 Random Forest 模型；
+         7. 使用 MAE、RMSE、MAPE 和 R² 进行模型评价；
+         8. 完成模型指标对比、预测曲线可视化和特征重要性分析。
 
+         下一步：
+         新建 03_model_comparison.ipynb，开始做更多模型的统一对比。
          
          
          
